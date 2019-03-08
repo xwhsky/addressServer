@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hkc.address.dao.AddressDao" >
+  <resultMap id="BaseResultMap" type="hkc.address.entity.Address" >
+    <id column="guid" property="guid" jdbcType="VARCHAR" />
+    <result column="objectid" property="objectid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="common_name" property="commonName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="county" property="county" jdbcType="VARCHAR" />
+    <result column="town" property="town" jdbcType="VARCHAR" />
+    <result column="communit" property="communit" jdbcType="VARCHAR" />
+    <result column="street" property="street" jdbcType="VARCHAR" />
+    <result column="lane" property="lane" jdbcType="VARCHAR" />
+    <result column="doorplate" property="doorplate" jdbcType="VARCHAR" />
+    <result column="resreg" property="resreg" jdbcType="VARCHAR" />
+    <result column="village" property="village" jdbcType="VARCHAR" />
+    <result column="devreg" property="devreg" jdbcType="VARCHAR" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+    <result column="doorplate1" property="doorplate1" jdbcType="VARCHAR" />
+    <result column="doorplate2" property="doorplate2" jdbcType="VARCHAR" />
+    <result column="room" property="room" jdbcType="VARCHAR" />
+    <result column="addpinyin" property="addpinyin" jdbcType="VARCHAR" />
+    <result column="lon" property="lon" jdbcType="DOUBLE" />
+    <result column="lat" property="lat" jdbcType="DOUBLE" />
+    <result column="addtype" property="addtype" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="scode" property="scode" jdbcType="VARCHAR" />
+    <result column="modifer" property="modifer" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="data_status" property="dataStatus" jdbcType="VARCHAR" />
+    <result column="ysbm" property="ysbm" jdbcType="VARCHAR" />
+    <result column="geom" property="geom" jdbcType="OTHER" />
+  </resultMap>
+
+
+  <select id="query1" resultType="Address">
+    <!-- 如何告诉MyBatis把结果映射到Appointment同时映射book属性 -->
+    <!-- 可以自由控制SQL -->
+    SELECT name,objectid,province,city,communit
+    FROM address
+    WHERE
+    name LIKE CONCAT ('%',#{name},'%');
+  </select>
+
+  <select id="query" resultType="Address">
+    <!-- 如何告诉MyBatis把结果映射到Appointment同时映射book属性 -->
+    <!-- 可以自由控制SQL -->
+    SELECT name,objectid,province,city,communit
+    FROM address
+    WHERE
+    name LIKE CONCAT ('%',#{name},'%')
+    OR city = #{city};
+
+  </select>
+
+</mapper>
