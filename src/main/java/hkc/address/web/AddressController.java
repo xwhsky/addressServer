@@ -1,6 +1,8 @@
 package hkc.address.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import hkc.address.dto.GlobalVariables;
 import hkc.address.service.AddressService;
 import hkc.address.dto.ExcelReader;
@@ -14,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.util.*;
 
 
@@ -48,6 +52,40 @@ public class AddressController {
     public @ResponseBody
     List<Address> query1(@RequestParam(value = "name") String name){
         return addressService.query1(name);
+    }
+
+    @RequestMapping(value = "/getAddressByPolygon")
+    public @ResponseBody
+    List<Address> spatial_query(@RequestParam(value = "extent") String extent)throws JSONException{
+
+        return addressService.getAddressByPolygon(extent);
+    }
+
+    @RequestMapping(value = "/getAddressByBuffer")
+    public @ResponseBody
+    List<Address> getAddressByBuffer(@RequestParam(value = "espg") Integer espg,@RequestParam(value = "distance") Double distance,@RequestParam(value = "x") Double x,@RequestParam(value = "y") Double y){
+        return addressService.getAddressByBuffer(espg,distance,x,y);
+    }
+
+    @RequestMapping(value = "/getAddressByQuery", method = RequestMethod.GET)
+    @ResponseBody
+    Map query1(@RequestParam("address") String address, @RequestParam("pageSize") Integer pageSize, @RequestParam("currentpage") Integer currentpage) throws IOException {
+        Address address1 = mapper.readValue(address, Address.class);
+        PageHelper.startPage(currentpage, pageSize);
+        List<Address> addressList = addressService.getAddressByQuery(address1);
+        PageInfo<Address> pageInfo = new PageInfo<>(addressList);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("pageSize", pageSize);
+        data.put("currentpage", pageInfo.getPageNum());
+        data.put("totalSize", pageInfo.getTotal());
+        data.put("data", pageInfo.getList());
+
+        result.put("data", data);
+        return result;
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)

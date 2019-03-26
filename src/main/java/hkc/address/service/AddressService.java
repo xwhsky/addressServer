@@ -10,5 +10,7 @@ import java.util.List;
 public interface AddressService {
 	List<Address> query1(String name);
 	List<Address> query(String name, String city);
-
+	List<Address> getAddressByPolygon(String extent);
+	List<Address> getAddressByBuffer(Integer espg,Double distance,Double x,Double y);
+	List<Address> getAddressByQuery(Address address);
 }

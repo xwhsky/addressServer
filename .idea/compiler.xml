@@ -6,11 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="addressServer" />
+        <module name="ssm" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="addressServer" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

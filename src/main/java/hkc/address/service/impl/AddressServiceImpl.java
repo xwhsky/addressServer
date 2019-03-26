@@ -1,5 +1,6 @@
 package hkc.address.service.impl;
 
+import hkc.address.entity.AddressExample;
 import hkc.address.service.AddressService;
 import hkc.address.dao.AddressDao;
 import hkc.address.entity.Address;
@@ -29,5 +30,37 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Address> query(String name, String city) {
         return addressMapper.query(name,city);
+    }
+
+    @Override
+    public List<Address> getAddressByPolygon(String extent) {
+        return addressMapper.getAddressByPolygon(extent);
+    }
+
+    public List getAddressByBuffer(Integer espg, Double distance,Double x, Double y ) {
+
+        String wkt = String.format("POINT(%f %f)", x, y);
+        return addressMapper.getAddressByBuffer(wkt, distance);
+    }
+
+    @Override
+    public List<Address> getAddressByQuery(Address address) {
+        AddressExample addressExample = new AddressExample();
+        AddressExample.Criteria criteria = addressExample.createCriteria();
+        if (address.getName() != null)
+            criteria.andNameLike("%" + address.getName() + "%");
+        if (address.getAddress() != null)
+            criteria.andAddressLike("%" + address.getAddress() + "%");
+        if (address.getAddtype() != null)
+            criteria.andAddtypeEqualTo(address.getAddtype());
+        if (address.getCounty() != null)
+            criteria.andCountyLike("%" + address.getCounty() + "%");
+        if(address.getStreet()!=null)
+            criteria.andStreetLike("%"+address.getStreet()+"%");
+        if (address.getTown() != null)
+            criteria.andTownLike("%" + address.getTown() + "%");
+        if (address.getCommunit() != null)
+            criteria.andCommunitLike("%" + address.getCommunit() + "%");
+        return addressMapper.selectByExample(addressExample);
     }
 }
